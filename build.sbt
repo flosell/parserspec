@@ -1,3 +1,6 @@
+import sbtrelease._
+import ReleaseStateTransformations._
+
 name := "ParserSpec"
 
 organization := "org.parserspec"
@@ -14,4 +17,3 @@ publishTo := Some("Bintray maven" at "https://api.bintray.com/maven/flosell/mave
 
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
-releaseSettings
