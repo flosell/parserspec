@@ -2,7 +2,7 @@ name := "ParserSpec"
 
 organization := "org.parserspec"
 
-version := "0.0.1-2013_06_23_1"
+version := "0.0.1-alpha1"
 
 scalaVersion := "2.10.1"
 
