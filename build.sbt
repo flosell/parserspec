@@ -13,3 +13,5 @@ scalacOptions ++= Seq("-feature")
 publishTo := Some("Bintray maven" at "https://api.bintray.com/maven/flosell/maven/parserspec")
 
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+
+releaseSettings
