@@ -39,7 +39,7 @@ abstract class ParserSpec extends FunSpec with ShouldMatchers with RegexParsers{
       parsing(s)(parser) should equal(expectedResult)
     }
     
-    def toAnything = it("must succeed parsing parsing'"+s+"'") {parsing(s)(parser)}
+    def toAnything = it("must succeed parsing'"+s+"'") {parsing(s)(parser)}
   }
 
   implicit def toParserWord[T](parser: Parser[T]) = ParserWord(parser)
