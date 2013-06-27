@@ -1,3 +1,6 @@
+Overview
+========
+
 ParserSpec is a small internal scala-dsl to test parser combinators: 
 
     describe("exprparser") {
