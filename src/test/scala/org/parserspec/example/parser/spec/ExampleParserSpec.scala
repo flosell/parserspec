@@ -12,5 +12,7 @@ class ExampleParserSpec extends ParserSpec with Arith{
 	  // TODO: more tests
 	  
 	  factor must never parse "a"
+	  
+	  setOfNumbers mustParse "1 2 3" to Set(1,2,3)
 	}
 }

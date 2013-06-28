@@ -59,7 +59,8 @@ abstract class ParserSpec extends FunSpec with ShouldMatchers with RegexParsers{
     }  
   }
   
-  case class ToWord[T](parser : Parser[T], s: String) {
+  
+  case class ToWord[T](parser : Parser[_>:T], s: String) { // TODO: check that we are using _>:T correctly 
 	def apply(a : anything.type) = it("must succeed parsing '"+s+"'") {parsing(s)(parser)}
 	def apply(r : result.type) = resultWord(parser,s) 
 	def apply(expectedResult : T) = it("must parse '" + s + "' to " + expectedResult) {
