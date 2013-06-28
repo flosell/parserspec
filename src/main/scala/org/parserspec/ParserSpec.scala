@@ -29,9 +29,21 @@ abstract class ParserSpec extends FunSpec with ShouldMatchers with RegexParsers{
         "Could not parse '" + s + "': " + msg)
     }
   }
+  
+  case class never 
+  
+  case class SucceedWord[T](parser: Parser[T]) {
+    def apply(s : String) = it("must not succeed parsing '"+s+"'") {try {parsing(s)(parser); fail("parsing succeeded but should have failed")}}
+  }
+  
+  case class NeverWord[T](parser: Parser[T]) {
+    def parse = SucceedWord(parser)
+  }
 
   case class ParserWord[T](parser: Parser[T]) {
     def mustParse(s: String) = MustParsePart(parser, s)
+    
+    def must(n : never.type) = NeverWord(parser)
   }
   
   case class anything

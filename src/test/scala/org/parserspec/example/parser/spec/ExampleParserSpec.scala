@@ -10,5 +10,7 @@ class ExampleParserSpec extends ParserSpec with Arith{
 	  factor mustParse "1" to result matching (x => x == "1")
 	  factor mustParse "1" to anything
 	  // TODO: more tests
+	  
+	  factor must never parse "a"
 	}
 }
