@@ -4,6 +4,7 @@ import scala.util.parsing.input.CharSequenceReader
 import org.scalatest.FunSpec
 import scala.util.parsing.combinator.RegexParsers
 import scala.language.implicitConversions
+import util.parsing.input._
 /**
  * Usage: 
  * <pre>
@@ -17,22 +18,23 @@ import scala.language.implicitConversions
 </pre>
  */
 abstract class ParserSpec extends FunSpec with ShouldMatchers with RegexParsers{
-  private def parsing[T](s: String)(implicit p: Parser[T]): T = {
+  val parsers : RegexParsers
+  private def parsing[T](s: String)(implicit p: parsers.Parser[T]): T = {
     // thanks to http://henkelmann.eu/2011/01/29/an_introduction_to_scala_parser_combinators-part_3_unit_tests
     //wrap the parser in the phrase parse to make sure all input is consumed
-    val phraseParser = phrase(p)
+    val phraseParser = parsers.phrase(p)
     //we need to wrap the string in a reader so our parser can digest it
-    val input = new CharSequenceReader(s)
+    val input : ParserSpec.this.Input = new CharSequenceReader(s)
     phraseParser(input) match {
-      case Success(t, _) => t
-      case NoSuccess(msg, _) => throw new IllegalArgumentException(
+      case parsers.Success(t, _) => t
+      case parsers.NoSuccess(msg, _) => throw new IllegalArgumentException(
         "Could not parse '" + s + "': " + msg)
     }
   }
   
   case class never 
   
-  case class SucceedWord[T](parser: Parser[T]) {
+  case class SucceedWord[T](parser: parsers.Parser[T]) {
     def apply(s : String) = it("must not succeed parsing '"+s+"'") {
       try {
         parsing(s)(parser);
@@ -41,26 +43,26 @@ abstract class ParserSpec extends FunSpec with ShouldMatchers with RegexParsers{
     }
   }
   
-  case class NeverWord[T](parser: Parser[T]) {
+  case class NeverWord[T](parser: parsers.Parser[T]) {
     def parse = SucceedWord(parser)
   }
 
-  case class ParserWord[T](parser: Parser[T]) {
-    def mustParse(s: String) = MustParsePart(parser, s)
+  case class ParserWord[T](p: parsers.Parser[T]) {
+    def mustParse(s: String) = MustParsePart(p, s)
     
-    def must(n : never.type) = NeverWord(parser)
+    def must(n : never.type) = NeverWord(p)
   }
   
   case class anything
   case class result
-  case class resultWord[T](parser : Parser[T], s: String) {
+  case class resultWord[T](parser : parsers.Parser[T], s: String) {
     def matching(matcher :  T => Boolean)= it("must parse '" + s + "' to something matching to provided matcher") { 
       matcher(parsing(s)(parser)) should be (true) 
     }  
   }
   
   
-  case class ToWord[T](parser : Parser[_>:T], s: String) { // TODO: check that we are using _>:T correctly 
+  case class ToWord[T](parser : parsers.Parser[_>:T], s: String) { // TODO: check that we are using _>:T correctly 
 	def apply(a : anything.type) = it("must succeed parsing '"+s+"'") {parsing(s)(parser)}
 	def apply(r : result.type) = resultWord(parser,s) 
 	def apply(expectedResult : T) = it("must parse '" + s + "' to " + expectedResult) {
@@ -68,9 +70,9 @@ abstract class ParserSpec extends FunSpec with ShouldMatchers with RegexParsers{
     }
   }
   
-  case class MustParsePart[T](parser: Parser[T], s: String) {
+  case class MustParsePart[T](parser: parsers.Parser[T], s: String) {
 	def to = ToWord(parser,s) 
   }
 
-  implicit def toParserWord[T](parser: Parser[T]) = ParserWord(parser)
+  implicit def toParserWord[T](parser: parsers.Parser[T]) = ParserWord(parser)
 }
