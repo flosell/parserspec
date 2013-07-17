@@ -1,7 +1,8 @@
 Overview
 ========
 
-ParserSpec is a small internal scala-dsl to test parser combinators: 
+ParserSpec is a small internal scala-dsl to test parser combinators:
+
     describe("exprparser") {
       factor mustParse "1" to "1"
       factor mustParse "1" to result matching (x => x == "1")
