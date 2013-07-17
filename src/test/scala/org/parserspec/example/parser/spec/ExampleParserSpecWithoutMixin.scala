@@ -10,7 +10,7 @@ object ArithParser extends Arith {
 }
 
 class ExampleParserSpecWithoutMixing extends ParserSpec{
-  val parsers = ArithParser
+  override val parsers = ArithParser
 	describe("exprparser") {
 	  ArithParser.factor mustParse "1" to "1"
 	  ArithParser.giveMeFactorParser() mustParse "1" to result matching (x => x == "1")

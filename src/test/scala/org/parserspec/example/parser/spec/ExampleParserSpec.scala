@@ -5,7 +5,7 @@ import org.parserspec.example.parser.Arith
 import scala.language.postfixOps
 
 class ExampleParserSpec extends ParserSpec with Arith{
-  val parsers = this
+  override val parsers = this
 	describe("exprparser") {
 	  factor mustParse "1" to "1"
 	  factor mustParse "1" to result matching (x => x == "1")
