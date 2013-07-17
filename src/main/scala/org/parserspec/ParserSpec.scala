@@ -75,4 +75,6 @@ abstract class ParserSpec extends FunSpec with ShouldMatchers with RegexParsers{
   }
 
   implicit def toParserWord[T](parser: parsers.Parser[T]) = ParserWord(parser)
+  implicit def toParserWordForMixedIn[T](parser: Parser[T]) = ParserWord(parser.asInstanceOf[parsers.Parser[T]]) // FIXME: ugly
 }
+
