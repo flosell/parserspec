@@ -18,7 +18,7 @@ How to get it
 
     resolvers+="Florians Maven Repo" at "http://dl.bintray.com/flosell/maven"
        
-    libraryDependencies += "org.parserspec" % "parserspec_2.10" % "0.0.1-alpha6" % "test"
+    libraryDependencies += "org.parserspec" % "parserspec_2.10" % "0.0.1-alpha7" % "test"
 
 
 API changes from alpha-6 to alpha-7:
